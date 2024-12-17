@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Blocker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            width: 320px;
+            min-height: 400px;
+            background: white;
+        }
+
+        .container {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Header styles */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(to right, #2563eb, #9333ea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo svg {
+            width: 16px;
+            height: 16px;
+            color: white;
+        }
+
+        /* Input section styles */
+        .input-container {
+            position: relative;
+        }
+
+        .input {
+            width: 100%;
+            padding: 8px 12px;
+            padding-right: 64px;
+            font-size: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+
+        .add-button {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-button:hover {
+            opacity: 0.9;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+            margin-left: 4px;
+        }
+
+        /* List section styles */
+        .list-container {
+            background: #f9fafb;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .list-header {
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .list-header svg {
+            width: 16px;
+            height: 16px;
+            color: #3b82f6;
+        }
+
+        .list-header-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .list {
+            max-height: 192px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .site-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .site-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fee2e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .site-icon svg {
+            width: 12px;
+            height: 12px;
+            color: #ef4444;
+        }
+
+        .site-domain {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .delete-button {
+            padding: 4px;
+            border: none;
+            background: none;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .delete-button:hover {
+            color: #ef4444;
+            background: #fee2e2;
+        }
+
+        .delete-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer styles */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* Validation states */
+        .input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+        }
+
+        .input.warning {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1);
+        }
+
+        .input.success {
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* Animation classes */
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1 class="title">Site Blocker</h1>
+                <p class="subtitle">Manage your blocked websites</p>
+            </div>
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div>
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    id="websiteInput" 
+                    class="input"
+                    placeholder="Enter website to block" 
+                    aria-label="Enter website to block">
+                <button 
+                    id="addButton"
+                    class="add-button"
+                    aria-label="Add website to block list">
+                    Add
+                </button>
+            </div>
+            <p class="helper-text">Example: facebook.com, twitter.com</p>
+        </div>
+
+        <!-- Blocked Sites List -->
+        <div class="list-container">
+            <div class="list-header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V3zm1 4h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1zm0 4h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                <span class="list-header-text">Blocked Websites</span>
+            </div>
+            <ul id="blockedList" class="list"></ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Click × to remove a blocked website
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html> 
